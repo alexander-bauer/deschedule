@@ -8,7 +8,10 @@ function style_section(section, classes) {
            '<div class="section card waves-effect waves-block waves-light ' +
                 classes.join(' ') +
               '" data-sectionid="' + section.class_code+'.'+section.number +'" ' +
-              'onclick="section_click(this);">' +
+              'tabindex="0"' +
+              'onclick="section_click(this);"' +
+              'onkeyup="if(event.keyCode == 13) { section_click(this); }"' +
+              '>' +
              '<div class="card-content">' +
                '<div class="section-header card-title row">' +
                  '<div class="col s12 m6 left-align">' +
