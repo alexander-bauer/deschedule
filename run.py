@@ -7,13 +7,15 @@ def main(args):
     from app import app
     app.config['SQLALCHEMY_DATABASE_URI'] = args.db
     app.config['SQLALCHEMY_MIGRATE_REPO'] = args.migrate
+    app.config['HOST'] = args.host
+    app.config['PORT'] = args.port
     app.config.from_object(args.config)
 
     if args.create:
         from app import db
         db.create_all()
 
-    app.run(host=args.host, port=args.port, debug=args.debug)
+    app.run(host=app.config['HOST'], port=app.config['PORT'], debug=args.debug)
 
 def parse(args):
     parser = argparse.ArgumentParser()
