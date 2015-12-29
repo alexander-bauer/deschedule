@@ -1,0 +1,12 @@
+[Unit]
+Description=Webabb for generating ICalendar files from collaborative class schedules
+Wants=network.target
+After=network.target
+
+[Service]
+ProtectHome=true
+ProtectSystem=true
+ExecStart=/bin/sh -c "cd /opt/deschedule; ./run.py /etc/deschedule/config
+
+[Install]
+WantedBy=multi-user.target

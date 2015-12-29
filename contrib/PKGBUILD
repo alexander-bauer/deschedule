@@ -39,4 +39,6 @@ package() {
     mkdir -p "$pkgdir/opt/$orig_pkgname/"
     cp -r "app" "flask" "Makefile" "run.py" "$pkgdir/opt/$orig_pkgname/"
     install -D -m600 "config.py" "$pkgdir/etc/$orig_pkgname/config.py"
+    install -D -m644 "contrib/deschedule.service" \
+        "$pkgdir/usr/lib/systemd/system/deschedule.service"
 }
