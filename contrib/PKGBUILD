@@ -3,7 +3,7 @@ pkgname=deschedule-git
 
 orig_pkgname="${pkgname%-git}"
 
-pkgver=r115.ab1f41d
+pkgver=
 pkgrel=1
 pkgdesc="Webapp for generating ICalendar files from collaborative class schedules"
 arch=('any')
@@ -37,8 +37,9 @@ build() {
 package() {
 	cd "$srcdir/$orig_pkgname"
     mkdir -p "$pkgdir/opt/$orig_pkgname/"
-    cp -r "app" "flask" "Makefile" "run.py" "$pkgdir/opt/$orig_pkgname/"
-    install -D -m600 "config.py" "$pkgdir/etc/$orig_pkgname/config.py"
+    cp -r "app" "flask" "Makefile" "run.py" "config.py" "$pkgdir/opt/$orig_pkgname/"
+    mkdir -p "$pkgdir/etc/$orig_pkgname/"
+    ln --symbolic "$pkgdir/opt/deschedule/config.py" "$pkgdir/etc/$orig_pkgname/config.py"
     install -D -m644 "contrib/deschedule.service" \
         "$pkgdir/usr/lib/systemd/system/deschedule.service"
 }

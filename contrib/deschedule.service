@@ -6,7 +6,7 @@ After=network.target
 [Service]
 ProtectHome=true
 ProtectSystem=true
-ExecStart=/bin/sh -c "cd /opt/deschedule; ./run.py /etc/deschedule/config
+ExecStart=/bin/sh -c "cd /opt/deschedule; ./run.py"
 
 [Install]
 WantedBy=multi-user.target
