@@ -1,6 +1,9 @@
 app.db
 flask/
 
+contrib/deschedule
+*.pkg.tar.xz
+
 # Created by https://www.gitignore.io/api/python,linux
 
 ### Python ###

@@ -1,0 +1,42 @@
+# Maintainer: Alexander Bauer <sasha@linux.com>
+pkgname=deschedule-git
+
+orig_pkgname="${pkgname%-git}"
+
+pkgver=r115.ab1f41d
+pkgrel=1
+pkgdesc="Webapp for generating ICalendar files from collaborative class schedules"
+arch=('any')
+url="https://github.com/alexander-bauer/deschedule"
+license=('GPL3')
+groups=()
+depends=('python')
+makedepends=('git' 'python')
+provides=("$orig_pkgname")
+conflicts=("$orig_pkgname")
+replaces=()
+backup=()
+options=()
+install=
+source=("$orig_pkgname::git+https://github.com/alexander-bauer/deschedule.git#branch=master")
+noextract=()
+md5sums=('SKIP')
+
+
+
+pkgver() {
+	cd "$srcdir/$orig_pkgname"
+	printf "r%s.%s" "$(git rev-list --count HEAD)" "$(git rev-parse --short HEAD)"
+}
+
+build() {
+	cd "$srcdir/$orig_pkgname"
+    make requirements
+}
+
+package() {
+	cd "$srcdir/$orig_pkgname"
+    mkdir -p "$pkgdir/opt/$orig_pkgname/"
+    cp -r "app" "flask" "Makefile" "run.py" "$pkgdir/opt/$orig_pkgname/"
+    install -D -m600 "config.py" "$pkgdir/etc/$orig_pkgname/config.py"
+}
