@@ -1,4 +1,5 @@
 from app import app, db
+
 from app.models import *
 from app.renderers import *
 
@@ -48,7 +49,7 @@ def api_all_semesters():
 @api_response
 def api_new_semester(semester):
     s = Semester(
-            name  = semester,
+            name  = semester.upper(),
             start = request.data.get('start'),
             end   = request.data.get('end')
     )
@@ -178,7 +179,7 @@ def api_class_sections(semester, class_code):
     """List all sections for the class code in the semester."""
     sections = Section.query.join(Semester)\
             .filter(Semester.name == semester.upper())\
-            .filter(Section.class_code == class_code)\
+            .filter(Section.class_code == class_code.upper())\
             .order_by(Section.number)\
             .all()
     return sections
@@ -194,7 +195,7 @@ def api_new_section(semester, class_code, section_number):
         flask.abort(400)
 
     section = Section(
-        class_code = class_code,
+        class_code = class_code.upper(),
         number = section_number,
         kind = request.data.get('kind'),
         days = request.data.get('days').split('/'),
@@ -216,7 +217,7 @@ def api_new_section(semester, class_code, section_number):
 def api_section(semester, class_code, section_number):
     section = Section.query.join(Semester) \
             .filter(Semester.name == semester.upper()) \
-            .filter(db.and_(Section.class_code == class_code,
+            .filter(db.and_(Section.class_code == class_code.upper(),
                             Section.number == section_number)).one()
     print(section)
     return section
@@ -228,7 +229,7 @@ def api_section_events(semester, class_code, section_number):
     """List calendar events for a particular section of a class."""
     section = Section.query.join(Semester) \
             .filter(Semester.name == semester.upper()) \
-            .filter(db.and_(Section.class_code == class_code,
+            .filter(db.and_(Section.class_code == class_code.upper(),
                             Section.number == section_number)).one()
     return section.events()
 
