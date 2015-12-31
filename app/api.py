@@ -158,7 +158,6 @@ def api_all_breaks(semester):
 @api_response
 def api_search(semester, classes):
     class_codes = classes.upper().split(',')
-    print(class_codes)
     sections = Section.query.join(Semester)\
             .filter(Semester.name == semester.upper())\
             .filter(Section.class_code.in_(class_codes))\
@@ -219,7 +218,6 @@ def api_section(semester, class_code, section_number):
             .filter(Semester.name == semester.upper()) \
             .filter(db.and_(Section.class_code == class_code.upper(),
                             Section.number == section_number)).one()
-    print(section)
     return section
 
 @app.route('/api/umbc/semester/<semester>/class/<class_code>/<int:section_number>/events/')
