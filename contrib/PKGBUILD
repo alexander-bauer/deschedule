@@ -15,7 +15,7 @@ makedepends=('git' 'python')
 provides=("$orig_pkgname")
 conflicts=("$orig_pkgname")
 replaces=()
-backup=()
+backup=('etc/deschedule/config.py')
 options=()
 install=
 source=("$orig_pkgname::git+https://github.com/alexander-bauer/deschedule.git#branch=master")
@@ -37,9 +37,10 @@ build() {
 package() {
 	cd "$srcdir/$orig_pkgname"
     mkdir -p "$pkgdir/opt/$orig_pkgname/"
-    cp -r "app" "flask" "Makefile" "run.py" "config.py" "$pkgdir/opt/$orig_pkgname/"
+    cp -r "app" "flask" "Makefile" "run.py" "$pkgdir/opt/$orig_pkgname/"
+    install -D -m640 "config.py" "$pkgdir/etc/$orig_pkgname/config.py"
     mkdir -p "$pkgdir/etc/$orig_pkgname/"
-    ln --symbolic "$pkgdir/opt/deschedule/config.py" "$pkgdir/etc/$orig_pkgname/config.py"
-    install -D -m644 "contrib/deschedule.service" \
-        "$pkgdir/usr/lib/systemd/system/deschedule.service"
+    ln --symbolic "/etc/$orig_pkgname/config.py" "$pkgdir/opt/$orig_pkgname/config.py"
+    install -D -m644 "contrib/$orig_pkgname.service" \
+        "$pkgdir/usr/lib/systemd/system/$orig_pkgname.service"
 }
