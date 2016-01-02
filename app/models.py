@@ -193,10 +193,10 @@ class Section(db.Model):
                     self.time.replace(tzinfo=timezone.UMBC_TZINFO)),
                 'duration': self.length,
             }
-            if self.instructor or self.email:
-                event['organizer'] = '{} <{}>'.format(
-                        self.instructor if self.instructor else '',
-                        self.email if self.email else '')
+            #if self.instructor or self.email:
+            #    event['organizer'] = '{} <{}>'.format(
+            #            self.instructor if self.instructor else '',
+            #            self.email if self.email else '')
             if self.room:
                 event['location'] = self.room
 
