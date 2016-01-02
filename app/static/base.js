@@ -117,7 +117,7 @@ function any_sections_selected() {
 
 function construct_schedule_url(school, semester, sections) {
     if(typeof(sections) != 'string') { sections = sections.join(','); }
-    return 'schedule/?semester=' + semester + '&sections=' + sections;
+    return 'schedule/ical/?semester=' + semester + '&sections=' + sections;
 }
 
 function get_school() {

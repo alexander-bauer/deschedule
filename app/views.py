@@ -18,6 +18,11 @@ def index():
             section_kinds = models.Section.kinds
     )
 
+@app.route('/schedule/ical/')
+@set_renderers(ICalendarRenderer)
+def schedule_ical():
+    return {'data': api.schedule_events(request.args.get('semester'))}
+
 @app.route('/schedule/')
 @set_renderers(HTMLRenderer, ICalendarRenderer)
 def schedule():
@@ -26,6 +31,6 @@ def schedule():
     print('here')
     print(request.headers)
     if ICalendarRenderer.media_type in request.headers['Accept'].split(','):
-        return api.api_schedule_events(request.args.get('semester'))
+        return {'data': api.schedule_events(request.args.get('semester'))}
     else:
         return render_template('schedule.html')

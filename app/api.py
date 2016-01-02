@@ -100,6 +100,8 @@ reverting to composed 'OR/AND' query.")
 @set_renderers(ExtendedJSONRenderer, MyBrowsableAPIRenderer, ICalendarRenderer)
 @api_response
 def api_schedule_events(semester):
+    return schedule_events(semester)
+def schedule_events(semester):
     """Build a per-session schedule just like the above endpoint, but also
     generate all events. Also can generate iCalendar format output."""
     # Get the pairs of class codes and section numbers.
