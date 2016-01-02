@@ -16,4 +16,4 @@ db: app/models.py
 app.db: db
 
 archpkg: contrib/PKGBUILD
-	cd contrib/; makepkg --holdver --clean --force
+	cd contrib/; makepkg --holdver --clean --cleanbuild --force
