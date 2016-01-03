@@ -36,11 +36,15 @@ build() {
 
 package() {
 	cd "$srcdir/$orig_pkgname"
+    gitver="$(git describe --always --dirty=+)"
+
     mkdir -p "$pkgdir/opt/$orig_pkgname/"
-    cp -r "app" "flask" "Makefile" "run.py" "$pkgdir/opt/$orig_pkgname/"
-    install -D -m640 "config.py" "$pkgdir/etc/$orig_pkgname/config.py"
-    mkdir -p "$pkgdir/etc/$orig_pkgname/"
+    install -p -D "app" "flask" "Makefile" "run.py" "$pkgdir/opt/$orig_pkgname/"
+    echo "$gitver" > "$pkgdir/opt/$orig_pkgname/VERSION"
+
+    install -p -D -m640 "config.py" "$pkgdir/etc/$orig_pkgname/config.py"
     ln --symbolic "/etc/$orig_pkgname/config.py" "$pkgdir/opt/$orig_pkgname/config.py"
-    install -D -m644 "contrib/$orig_pkgname.service" \
+
+    install -p -D -m644 "contrib/$orig_pkgname.service" \
         "$pkgdir/usr/lib/systemd/system/$orig_pkgname.service"
 }
