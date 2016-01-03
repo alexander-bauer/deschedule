@@ -13,6 +13,7 @@ from app.renderers import ICalendarRenderer
 @set_renderers(HTMLRenderer)
 def index():
     return render_template('index.html',
+            VERSION = app.config['VERSION'],
             semesters = models.Semester.query.order_by(
                 sqlalchemy.desc('end')).all(),
             section_kinds = models.Section.kinds

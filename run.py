@@ -1,5 +1,6 @@
 #!flask/bin/python
 import sys, os, argparse
+import subprocess
 
 basedir = os.path.abspath(os.path.dirname(__file__))
 
@@ -9,6 +10,25 @@ def main(args):
     app.config['SQLALCHEMY_MIGRATE_REPO'] = args.migrate
     app.config['HOST'] = args.host
     app.config['PORT'] = args.port
+    version = None
+    try:
+        with open('VERSION', 'r') as f:
+            version = f.read().strip()
+    except FileNotFoundError:
+        pass
+    if not version:
+        try:
+            version = subprocess.check_output(
+                    ['git', 'describe', '--always', '--dirty=+']).decode('UTF-8')
+        except:
+            pass
+
+    if version:
+        app.config['VERSION'] = version
+        app.logger.info('Running Deschedule version ' + version)
+    else:
+        app.logger.warn('Could not get version from file or command')
+
     app.config.from_object(args.config)
 
     if args.create:
