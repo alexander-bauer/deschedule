@@ -97,6 +97,7 @@ class Section(db.Model):
                 name='_class_section_num_uc'),
         )
     kinds = ("Lecture", "Laboratory", "Discussion")
+    timeformats = ['%H:%M', '%I:%M %p']
     id = db.Column(db.Integer, primary_key=True)
 
     semester_id = db.Column(db.Integer, db.ForeignKey('semester.id'))
@@ -128,7 +129,14 @@ class Section(db.Model):
         self.kind       = kind
 
         if type(time) == str:
-            self.time = datetime.datetime.strptime(time, '%H:%M').time()
+            for timeformat in self.timeformats:
+                try:
+                    self.time = datetime.datetime.strptime(time, timeformat).time()
+                    break
+                except ValueError:
+                    pass
+            if self.time == None:
+                raise ValueError('no matching time format')
         else:
             self.time = time
 
