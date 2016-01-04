@@ -39,7 +39,7 @@ package() {
     gitver="$(git describe --always --dirty=+)"
 
     mkdir -p "$pkgdir/opt/$orig_pkgname/"
-    install -p -D "app" "flask" "Makefile" "run.py" "$pkgdir/opt/$orig_pkgname/"
+    cp -r "app" "flask" "Makefile" "run.py" "$pkgdir/opt/$orig_pkgname/"
     echo "$gitver" > "$pkgdir/opt/$orig_pkgname/VERSION"
 
     install -p -D -m640 "config.py" "$pkgdir/etc/$orig_pkgname/config.py"
