@@ -341,6 +341,7 @@ $(document).ready(function() {
       console.log('Section added successfully.');
       $('#addsection').removeClass('submitting');
       $('ul#sections').append(style_section(resp['data'], ['active', 'new']));
+      $('#results').removeClass('noresults');
 
       // Transition the new section in. Copied right from
       // Materialize/js/transitions.js.
