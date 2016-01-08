@@ -69,6 +69,7 @@ function deselect_section(section_id) {
     return selected_section_id != section_id;
   });
   refresh_chips(selected_sections);
+  update_schedule_url(selected_sections);
 
   $('.section.active[data-sectionid="' + section_id +'"]').removeClass('active');
 }
@@ -118,6 +119,21 @@ function any_sections_selected() {
 function construct_schedule_url(school, semester, sections) {
     if(typeof(sections) != 'string') { sections = sections.join(','); }
     return 'schedule/ical/?semester=' + semester + '&sections=' + sections;
+}
+
+function update_schedule_url(selected_sections) {
+    var ical_link = $('#ical_link');
+    if(selected_sections.length != 0) {
+        ical_link.removeAttr('disabled');
+        ical_link.attr('value', window.location.host +
+                window.location.pathname +
+                construct_schedule_url(get_school(),
+                                       get_semester(),
+                                       selected_sections));
+    } else {
+        ical_link.attr('disabled', 'disabled');
+        ical_link.attr('value', '');
+    }
 }
 
 function get_school() {

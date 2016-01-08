@@ -432,16 +432,7 @@ function section_click(element) {
   }
   console.log('Now selected: ' + selected_sections);
   refresh_chips(selected_sections);
-
-  ical_link = $('#ical_link');
-  if(selected_sections.length > 0) {
-    ical_link.removeAttr('disabled');
-    ical_link.attr('value', window.location.host + window.location.pathname +
-        construct_schedule_url(get_school(), get_semester(), selected_sections));
-  } else {
-    ical_link.attr('disabled', 'disabled');
-    ical_link.attr('value', '');
-  }
+  update_schedule_url(selected_sections);
 }
 
 function load_random() {
