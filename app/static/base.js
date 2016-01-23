@@ -125,7 +125,8 @@ function update_schedule_url(selected_sections) {
     var ical_link = $('#ical_link');
     if(selected_sections.length != 0) {
         ical_link.removeAttr('disabled');
-        ical_link.attr('value', window.location.host +
+        ical_link.attr('value', window.location.protocol + '//' +
+                window.location.host +
                 window.location.pathname +
                 construct_schedule_url(get_school(),
                                        get_semester(),
