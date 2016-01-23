@@ -97,9 +97,11 @@ class Break(db.Model):
         event = {
             'summary': self.name if self.name else 'Break',
             'dtstart': datetime.datetime.combine(self.start,
-                datetime.time(0, 0)),
+                datetime.time(0, 0))\
+                        .replace(tzinfo=timezone.UMBC_TZINFO),
             'dtend':   datetime.datetime.combine(self.end +
-                datetime.timedelta(days=1), datetime.time(0, 0))
+                datetime.timedelta(days=1), datetime.time(0, 0))\
+                        .replace(tzinfo=timezone.UMBC_TZINFO)
         }
         yield event
         return
