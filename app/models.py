@@ -91,6 +91,19 @@ class Break(db.Model):
                 'name': self.name
             }
 
+    def events(self):
+        # There will only be one event, but we yield it to implement the same
+        # interface as with semesters.
+        event = {
+            'summary': self.name if self.name else 'Break',
+            'dtstart': datetime.datetime.combine(self.start,
+                datetime.time(0, 0)),
+            'dtend':   datetime.datetime.combine(self.end +
+                datetime.timedelta(days=1), datetime.time(0, 0))
+        }
+        yield event
+        return
+
 class Section(db.Model):
     __table_args__ = (
             db.UniqueConstraint('class_code', 'number', 'semester_id',

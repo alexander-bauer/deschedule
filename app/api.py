@@ -108,6 +108,8 @@ def schedule_events(semester):
     section_pairs = [tuple(pair.split('.')) for pair in
             request.args.get('sections').split(',')]
 
+    s = Semester.query.filter(Semester.name == semester.upper()).one()
+
     try:
         sections = Section.query.join(Semester) \
                 .filter(Semester.name == semester.upper()) \
@@ -126,7 +128,9 @@ reverting to composed 'OR/AND' query.")
                         for code, number in section_pairs)))) \
                 .all()
 
-    return itertools.chain(*(section.events() for section in sections))
+    return itertools.chain(
+            *(b.events() for b in s.breaks),
+            *(section.events() for section in sections))
 
 @app.route('/api/umbc/semester/<semester>/days/')
 @api_response
