@@ -1,6 +1,6 @@
 from app import db, timezone
 
-import datetime
+import datetime, re
 
 def public_dict(o, exclude=('_',)):
     return {k: v for k, v in o.__class__.__dict__.items()
@@ -10,6 +10,36 @@ schedule_sections = db.Table('schedule_sections',
         db.Column('schedule_id', db.Integer, db.ForeignKey('schedule.id')),
         db.Column('section_id', db.Integer, db.ForeignKey('section.id')),
 )
+
+class Building(db.Model):
+    #__table_args__ = (
+    #        db.UniqueConstraint('name',
+    #            name='_building_school_uc'),
+    #    )
+    id = db.Column(db.Integer, primary_key=True)
+
+    name = db.Column(db.String, unique=True)
+    lat = db.Column(db.Float)
+    lon = db.Column(db.Float)
+    regex = db.Column(db.String, nullable=True)
+
+    _compiled_regex = None
+
+    def __init__(self, name, lat, lon, regex=None):
+        self.name = name
+        self.lat = lat
+        self.lon = lon
+        self.regex = regex
+
+    def __repr__(self):
+        return '<{} "{}">'.format(self.__class__.__name__, self.name)
+
+    def match(self, room):
+        if not self._compiled_regex:
+            restring = self.regex if self.regex else self.name
+            self._compiled_regex = re.compile(restring, flags=re.IGNORECASE)
+
+        return self._compiled_regex.match(room)
 
 class Schedule(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -201,6 +231,15 @@ class Section(db.Model):
         else:
             return l
 
+    def building(self):
+        if not self.room: return None
+
+        for building in Building.query.all():
+            if building.match(self.room):
+                return building
+
+        return None
+
     def on_weekday(self, date):
         """Return true if the section is scheduled to meet on a given day,
         using only the Weekday to check."""
@@ -222,5 +261,7 @@ class Section(db.Model):
             #            self.email if self.email else '')
             if self.room:
                 event['location'] = self.room
+                b = self.building()
+                if b: event['geo'] = (b.lat, b.lon)
 
             yield event

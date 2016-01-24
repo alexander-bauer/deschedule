@@ -37,6 +37,26 @@ def api_root():
     https://github.com/alexander-bauer/deschedule/blob/master/app/api.py"""
     return None
 
+# Endpoint for browsing all listed buildings.
+@app.route('/api/umbc/building/')
+@api_response
+def api_all_buildings():
+    return Building.query.all();
+
+# Create a new building
+@app.route('/api/umbc/building/<name>', methods=['POST'])
+@api_response
+def api_new_building(name):
+    b = Building(
+            name = name.upper(),
+            lat  = float(request.data.get('lat')),
+            lon  = float(request.data.get('lon')),
+            regex = request.data.get('regex', None))
+    db.session.add(b)
+    db.session.commit()
+    app.logger.info('Created building "{}"'.format(b))
+    return
+
 # Endpoint for browsing all listed semesters.
 @app.route('/api/umbc/semester/')
 @api_response
