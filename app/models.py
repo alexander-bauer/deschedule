@@ -82,10 +82,6 @@ class Semester(db.Model):
             day += datetime.timedelta(days=1)
 
 class Break(db.Model):
-    __table_args__ = (
-            db.UniqueConstraint('name', 'semester_id',
-                name='_name_semester_uc'),
-        )
     id    = db.Column(db.Integer, primary_key = True)
 
     start = db.Column(db.Date)
